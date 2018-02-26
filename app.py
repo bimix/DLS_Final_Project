@@ -2,6 +2,7 @@ from flask import Flask, flash, redirect, render_template, request, session, abo
 import os
 from flask_mysqldb import MySQL
 from passlib.hash import sha256_crypt
+from register_form import RegisterForm
 
 app = Flask(__name__)
 
@@ -52,6 +53,31 @@ def login():
     else:
         return render_template('login.html')
 
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    form = RegisterForm(request.form)
+
+    if request.method == 'POST' and form.validate():
+        name = form.name.data
+        email = form.email.data
+        username = form.username.data
+        password = sha256_crypt.encrypt(str(form.password.data))
+
+        # create a cursor
+        cur = mysql.connection.cursor()
+        cur.execute("INSERT INTO users(name, email,username, password) VALUES(%s, %s, %s, %s)",
+                        (name, email, username, password))
+
+        # commit to db
+        mysql.connection.commit()
+        cur.close()
+
+        flash('You are now registered and can login', 'success')
+
+        return redirect(url_for('login'))
+
+    return render_template('register.html', form=form)
+
     @app.route("/logout")
     def logout():
         session.clear()
@@ -60,4 +86,5 @@ def login():
         return home()
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', debug=False)
+    app.secret_key = 'secret123'
+    app.run(host='127.0.0.1', debug=False)
