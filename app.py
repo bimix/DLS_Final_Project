@@ -1,7 +1,7 @@
 from flask import Flask, flash, redirect, render_template, request, session, abort, url_for
 import os
 from flask_mysqldb import MySQL
-from passlib.hash import sha256_crypt
+from passlib.handlers.sha2_crypt import sha256_crypt
 from register_form import RegisterForm
 
 app = Flask(__name__)
