@@ -1,0 +1,8 @@
+# Methodology
+
+The following document will describe the methodology used by the group, to develop this mandatory assignment within the course og Development of Large Systems.
+The group consists of four members:
+* Burim Syla
+* John Kinyua Muriuki
+* David Mugwanya Ssezibwa
+* Casper Guldbech Nielsen
