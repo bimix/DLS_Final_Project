@@ -7,7 +7,7 @@ The group consists of four members:
 * David Mugwanya Ssezibwa
 * Casper Guldbech Nielsen
 
-Given that all members have part time jobs and some kids, it was not natural to go by a fixed methodology for developing this system. It came more natural to go by a concept that leans towards "Community driven development" in the sense that we have weekly meetings, either being by physical presence or by digital presence.
+Given that all members have part time jobs and some have kids, it was not natural to go by a fixed methodology for developing this system. It came more natural to go by a concept that leans towards "Community driven development" in the sense that we have weekly meetings, either being by physical presence or by digital presence.
 The meetings consists of delegating the work that needs to be done in the order that the team (community) finds important.
 
 ## Why not agile, Scrum or XP?
