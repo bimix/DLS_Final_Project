@@ -17,8 +17,8 @@ app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 #initialize MySQL
 mysql = MySQL(app)
 
-@app.route('/about')
-def about():
+@app.route('/')
+def home():
     return render_template('home.html')
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -78,12 +78,28 @@ def register():
 
     return render_template('register.html', form=form)
 
-    @app.route("/logout")
-    def logout():
-        session.clear()
-        flash('You are now logged out', 'success')
-        return redirect(url_for('login'))
-        return home()
+@app.route('/dashboard')
+def dashboard():
+    #create cursor
+    cur = mysql.connection.cursor()
+    #Get users
+    result = cur.execute("SELECT * FROM users")
+    users = cur.fetchall()
+
+    if result > 0:
+        return render_template('dashboard.html', users=users)
+    else:
+        msg = 'No Projects found'
+        return render_template('dashboard.html', msg=msg)
+    #Close the connection
+    cur.close()
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    flash('You are now logged out', 'success')
+    return redirect(url_for('login'))
+    return home()
 
 if __name__ == "__main__":
     app.secret_key = 'secret123'
