@@ -1,0 +1,25 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<h1>Dashboard </h1>
+<table class="table table-striped">
+  <thead>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Date Registered</th>
+
+  </thead>
+
+  <tbody>
+  {% for user in users %}
+    <tr>
+      <td>{{ user.name }}</td>
+      <td>{{ user.email|safe }}</td>
+      <td>{{ user.register_date }}</td>
+    </tr>
+  {% endfor %}
+ </tbody>
+</table>
+    <a class="btn btn-success" href="/sign_attendance">Sign Attendance</a>
+<hr>
+ {% endblock %}
