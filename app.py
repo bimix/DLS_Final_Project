@@ -1,5 +1,6 @@
 from flask import Flask, flash, redirect, render_template, request, session, abort, url_for
 import os
+import random
 from flask_mysqldb import MySQL
 from passlib.handlers.sha2_crypt import sha256_crypt
 from register_form import RegisterForm
@@ -78,6 +79,7 @@ def register():
 
     return render_template('register.html', form=form)
 
+
 @app.route('/dashboard')
 def dashboard():
     #create cursor
@@ -94,12 +96,56 @@ def dashboard():
     #Close the connection
     cur.close()
 
+
+@app.route('/codegenerator')
+def codegenerator():
+    error = None
+    password = ''
+    if request.method == 'GET' or 'POST':
+        for n in range(0, 8):
+            x = random.randint(0, 9)
+            if x <= 3:
+                password += str(random.choice('abcdefghijklmnopqrstuvxyz'))
+            elif x <= 6:
+                password += str(random.choice('*|!#Â£Â¤$%&/()=?{[]}-<>'))
+            else:
+                password += str(random.randrange(0, 9))
+
+        return password
+
+    return render_template('codegenerator.html', error=error)
+
+
+@app.route('/teacherprofile', methods=['GET', 'POST'])
+def teacherprofile():
+    error = None
+    if request.method == 'POST':
+        if request.form['submit'] == 'Generate':
+            redirect(url_for('codegenerator'))
+    elif request.method == 'GET':
+        redirect(url_for('codegenerator'))
+
+    return render_template('teacherprofile.html', error=error)
+
+
+@app.route('/teacherSignin', methods=['GET', 'POST'])
+def teacher():
+    error = None
+    if request.method == 'POST':
+        if request.form['user'] != 'admin' or request.form['pass'] != 'admin':
+            error = 'Invalid Credentials. Please try again.'
+        else:
+            return redirect(url_for('teacherprofile'))
+    return render_template('teacherSignin.html', error=error)
+
+
 @app.route("/logout")
 def logout():
     session.clear()
     flash('You are now logged out', 'success')
     return redirect(url_for('login'))
     return home()
+
 
 if __name__ == "__main__":
     app.secret_key = 'secret123'
