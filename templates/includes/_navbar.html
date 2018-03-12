@@ -20,10 +20,13 @@
                   {% if session.logged_in %}
                     <li><a href="/dashboard">Dashboard</a> </li>
                      <li><a href="/logout"><small>Welcome {{session.username}} </small> Logout</a> </li>
+
                   {% else %}
+                        <li><a href="teacherSignin">Teacher</a> </li>
+                    <li><a href="/login">Student</a> </li>
                       <li><a href="/register">Register</a> </li>
-                      <li><a href="/login">Login</a> </li>
                   {% endif %}
+
 
               </ul>
 

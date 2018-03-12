@@ -97,7 +97,7 @@ def dashboard():
     cur.close()
 
 
-@app.route('/codegenerator')
+@app.route('/codegenerator', methods=['GET', 'POST'])
 def codegenerator():
     error = None
     password = ''

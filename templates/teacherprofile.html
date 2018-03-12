@@ -1,18 +1,12 @@
-<html>
-  <head>
-    <title>TeachersProfile</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="../static/bootstrap.min.css" rel="stylesheet" media="screen">
-  </head>
-  <body>
-    <div class="container">
-      <h1>Generate</h1>
-      <br>
+{% extends 'layout.html' %}
+
+{% block body %}
+<h1>Teacher's profile </h1>
+
+
 <form>
     <input class="btn btn-default" type="button" value="Generate" onclick="window.location.href='{{ url_for( 'codegenerator' ) }}'">
 </form>
 
 
-    </div>
-  </body>
-</html>
+ {% endblock %}

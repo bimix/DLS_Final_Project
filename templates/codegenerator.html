@@ -1,14 +1,12 @@
-<head>
-    <title>The code generated</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="../static/bootstrap.min.css" rel="stylesheet" media="screen">
-  </head>
-  <body>
-    <div class="container">
-        <form>
-            <h1><br>Code Generated</h1>
-            <br>
-        </form>
-    </div>
-  </body>
+% extends 'layout.html' %}
 
+{% block body %}
+<h1>The code generated </h1>
+{% for err in error %}
+<div>
+  err
+</div>
+{% endfor %}
+
+
+ {% endblock %}
