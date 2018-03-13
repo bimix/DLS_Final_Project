@@ -1,4 +1,4 @@
-from flask import Flask, flash, redirect, render_template, request, session, abort, url_for
+from flask import Flask, flash, abort, redirect, render_template, request, session, abort, url_for
 import os
 import random
 from flask_mysqldb import MySQL
@@ -18,9 +18,19 @@ app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 #initialize MySQL
 mysql = MySQL(app)
 
+trusted_proxies = ('42.42.42.42', '127.0.0.1', '192.168.0.100')  # restrict access to only these ip addresses
+
+
+@app.before_request
+def limit_remote_addr():
+    if request.remote_addr != '127.0.0.1':  # we insert here KEAs ip address and also in the last line: host=...
+        abort(403)
+
+
 @app.route('/')
 def home():
     return render_template('home.html')
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
