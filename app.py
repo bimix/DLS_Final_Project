@@ -4,6 +4,8 @@ import random
 from flask_mysqldb import MySQL
 from passlib.handlers.sha2_crypt import sha256_crypt
 from register_form import RegisterForm
+from random import choice
+from string import ascii_uppercase
 
 app = Flask(__name__)
 
@@ -13,6 +15,7 @@ app.config['MYSQL_PORT'] = 3306
 app.config['MYSQL_USER'] = 'dt_admin'
 app.config['MYSQL_PASSWORD'] = 'Mar1010n'
 app.config['MYSQL_DB'] = 'studentsattendance'
+app.config['MYSQL_CHARSET'] = 'utf8mb4'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
 #initialize MySQL
@@ -103,27 +106,51 @@ def dashboard():
     else:
         msg = 'No Projects found'
         return render_template('dashboard.html', msg=msg)
-    #Close the connection
+        #Close the connection
     cur.close()
 
 
 @app.route('/codegenerator', methods=['GET', 'POST'])
 def codegenerator():
+
+    try:
+        error = None
+        with mysql.connection.cursor() as cursor:
+            password = ''
+            if request.method == 'GET' or 'POST':
+                for n in range(0, 8):
+                    x = random.randint(0, 9)
+                    if x <= 3:
+                        password += str(random.choice('abcdefghijklmnopqrstuvxyz'))
+                    elif x <= 6:
+                        password += str(random.choice('*|!#Â£Â¤$%&/()=?{[]}-<>'))
+                    else:
+                        password += str(random.randrange(0, 9))
+                        return password
+                    sql = "INSERT INTO generator(generated_code) VALUES (%s)"
+                    cursor.execute(sql, (password))
+                    mysql.connection.commit()
+                    #mysql.connection.close()
+
+    finally:
+
+        return render_template('codegenerator.html', error=error)
+
+@app.route('/generatecode', methods=['GET', 'POST'])
+def generatecode():
     error = None
-    password = ''
-    if request.method == 'GET' or 'POST':
-        for n in range(0, 8):
-            x = random.randint(0, 9)
-            if x <= 3:
-                password += str(random.choice('abcdefghijklmnopqrstuvxyz'))
-            elif x <= 6:
-                password += str(random.choice('*|!#Â£Â¤$%&/()=?{[]}-<>'))
-            else:
-                password += str(random.randrange(0, 9))
+    with mysql.connection.cursor() as cursor:
+        generated_code = ''
+        if request.method == 'GET' or 'POST':
+            for i in range(12):
+                generated_code += (''.join(choice(ascii_uppercase)))
+                #return generated_code
+                sql = "INSERT INTO code(generated_code) VALUES (%s)"
+                cursor.execute(sql, (generated_code))
+                mysql.connection.commit()
+                #mysql.connection.close()
 
-        return password
-
-    return render_template('codegenerator.html', error=error)
+            return render_template('generatecode.html', error=error)
 
 
 @app.route('/teacherprofile', methods=['GET', 'POST'])
