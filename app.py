@@ -34,21 +34,21 @@ def home():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method=='POST':
+    if request.method == 'POST':
 
-        #Get the fields
+        #  Get the fields
         POST_USERNAME = request.form['username']
         POST_PASSWORD = request.form['password']
 
-        #Create a cursor
+        #  Create a cursor
         cur = mysql.connection.cursor()
-        #Get user by username
+        #  Get user by username
         result = cur.execute("SELECT * FROM users WHERE username = %s", [POST_USERNAME])
         if result > 0:
-            #Get the stored hash
+            #  Get the stored hash
             data = cur.fetchone()
             password = data['password']
-            #Compare the passwords
+            #  Compare the passwords
         if sha256_crypt.verify(POST_PASSWORD, password):
             session['logged_in'] = True
             session['username'] = POST_USERNAME
@@ -59,7 +59,7 @@ def login():
         else:
             error = 'Invalid Login'
             return render_template('login.html', error=error)
-        #Close connection
+        #  Close connection
         cur.close()
     else:
         return render_template('login.html')
@@ -76,8 +76,8 @@ def register():
 
         # create a cursor
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO users(name, email,username, password) VALUES(%s, %s, %s, %s)",
-                        (name, email, username, password))
+        cur.execute("INSERT INTO users(name, email, username, password) VALUES(%s, %s, %s, %s)",
+                    (name, email, username, password))
 
         # commit to db
         mysql.connection.commit()
@@ -109,21 +109,29 @@ def dashboard():
 
 @app.route('/codegenerator', methods=['GET', 'POST'])
 def codegenerator():
-    error = None
-    password = ''
-    if request.method == 'GET' or 'POST':
-        for n in range(0, 8):
-            x = random.randint(0, 9)
-            if x <= 3:
-                password += str(random.choice('abcdefghijklmnopqrstuvxyz'))
-            elif x <= 6:
-                password += str(random.choice('*|!#Â£Â¤$%&/()=?{[]}-<>'))
-            else:
-                password += str(random.randrange(0, 9))
 
-        return password
+        error = None
+        #  with mysql.connection.cursor() as cursor:
+        passwordd = ''
 
-    return render_template('codegenerator.html', error=error)
+        if request.method == 'GET' or 'POST':
+
+            for n in range(0, 8):
+
+                x = random.randint(0, 9)
+                if x <= 3:
+                    passwordd += str(random.choice('abcdefghijklmnopqrstuvxyz'))
+                elif x <= 6:
+                    passwordd += str(random.choice(',.;:-_*%&/()=?!'))
+                else:
+                    passwordd += str(random.randrange(0, 9))
+            #return passwordd
+            cur = mysql.connection.cursor()
+            cur.execute("INSERT INTO generatedcode(password) VALUES (%s)", [passwordd])
+            mysql.connection.commit()
+            cur.close()
+
+        return render_template('codegenerator.html', error=error)
 
 
 @app.route('/teacherprofile', methods=['GET', 'POST'])
