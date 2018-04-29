@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3c8fb01a-44f6-44c4-a967-77d187873f30" name="Default" comment="-Interface login changes2">
-      <change beforePath="$PROJECT_DIR$/.idea/Mandatory_assignment1.iml" afterPath="$PROJECT_DIR$/.idea/Mandatory_assignment1.iml" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+    <list default="true" id="3c8fb01a-44f6-44c4-a967-77d187873f30" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/app.py" afterPath="$PROJECT_DIR$/app.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -40,8 +37,8 @@
       <file leaf-file-name="app.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="334">
-              <caret line="124" column="67" lean-forward="false" selection-start-line="124" selection-start-column="67" selection-end-line="124" selection-end-column="67" />
+            <state relative-caret-position="215">
+              <caret line="117" column="0" lean-forward="true" selection-start-line="117" selection-start-column="0" selection-end-line="117" selection-end-column="0" />
               <folding>
                 <element signature="e#0#98#0" expanded="true" />
                 <marker date="1525022681178" expanded="true" signature="1270:1309" ph="SELECT * FRO... users" />
@@ -265,7 +262,14 @@
       <option name="project" value="LOCAL" />
       <updated>1520853336517</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="-Generated code: fixed to save to database">
+      <created>1525023146282</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1525023146282</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -308,7 +312,8 @@
     <MESSAGE value="-Teacher's login added (static password and username 'admin' + 'admin' ),&#10;-Randomizer added to the teacher's profile." />
     <MESSAGE value="-Interface login changes" />
     <MESSAGE value="-Interface login changes2" />
-    <option name="LAST_COMMIT_MESSAGE" value="-Interface login changes2" />
+    <MESSAGE value="-Generated code: fixed to save to database" />
+    <option name="LAST_COMMIT_MESSAGE" value="-Generated code: fixed to save to database" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -651,8 +656,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="334">
-          <caret line="124" column="67" lean-forward="false" selection-start-line="124" selection-start-column="67" selection-end-line="124" selection-end-column="67" />
+        <state relative-caret-position="215">
+          <caret line="117" column="0" lean-forward="true" selection-start-line="117" selection-start-column="0" selection-end-line="117" selection-end-column="0" />
           <folding>
             <element signature="e#0#98#0" expanded="true" />
             <marker date="1525022681178" expanded="true" signature="1270:1309" ph="SELECT * FRO... users" />
