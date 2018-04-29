@@ -125,12 +125,12 @@ def codegenerator():
                     passwordd += str(random.choice(',.;:-_*%&/()=?!'))
                 else:
                     passwordd += str(random.randrange(0, 9))
-            #return passwordd
+
             cur = mysql.connection.cursor()
             cur.execute("INSERT INTO generatedcode(password) VALUES (%s)", [passwordd])
             mysql.connection.commit()
             cur.close()
-
+            return passwordd
         return render_template('codegenerator.html', error=error)
 
 
