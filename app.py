@@ -4,6 +4,8 @@ import random
 from flask_mysqldb import MySQL
 from passlib.handlers.sha2_crypt import sha256_crypt
 from register_form import RegisterForm
+import datetime
+import time
 
 app = Flask(__name__)
 
@@ -97,12 +99,18 @@ def dashboard():
     #Get users
     result = cur.execute("SELECT * FROM users")
     users = cur.fetchall()
+    timeout = datetime.datetime.today()
+    tdelta = datetime.timedelta(minutes=30)
 
     if result > 0:
         return render_template('dashboard.html', users=users)
     else:
         msg = 'No Projects found'
         return render_template('dashboard.html', msg=msg)
+
+
+
+
     #Close the connection
     cur.close()
 
@@ -111,8 +119,9 @@ def dashboard():
 def codegenerator():
 
         error = None
-        #  with mysql.connection.cursor() as cursor:
         passwordd = ''
+        codetime = datetime.datetime.today()
+        #  tdelta = datetime.timedelta(minutes=30)
 
         if request.method == 'GET' or 'POST':
 
@@ -127,7 +136,7 @@ def codegenerator():
                     passwordd += str(random.randrange(0, 9))
 
             cur = mysql.connection.cursor()
-            cur.execute("INSERT INTO generatedcode(password) VALUES (%s)", [passwordd])
+            cur.execute("INSERT INTO generatedcode(password, timeout) VALUES (%s, %s)", [passwordd, codetime])
             mysql.connection.commit()
             cur.close()
             return passwordd
