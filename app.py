@@ -33,6 +33,10 @@ def limit_remote_addr():
 def home():
     return render_template('home.html')
 
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -56,7 +60,7 @@ def login():
             session['username'] = POST_USERNAME
 
             flash('You are now logged in', 'success')
-            return redirect(url_for('dashboard'))
+            return redirect(url_for('sign_attendance'))
 
         else:
             error = 'Invalid Login'
@@ -108,9 +112,6 @@ def dashboard():
         msg = 'No Projects found'
         return render_template('dashboard.html', msg=msg)
 
-
-
-
     #Close the connection
     cur.close()
 
@@ -136,7 +137,7 @@ def codegenerator():
                     passwordd += str(random.randrange(0, 9))
 
             cur = mysql.connection.cursor()
-            cur.execute("INSERT INTO generatedcode(password, timeout) VALUES (%s, %s)", [passwordd, codetime])
+            cur.execute("INSERT INTO generatedcode(password) VALUES (%s)", [passwordd])
             mysql.connection.commit()
             cur.close()
             return passwordd
@@ -164,6 +165,35 @@ def teacher():
         else:
             return redirect(url_for('teacherprofile'))
     return render_template('teacherSignin.html', error=error)
+
+
+@app.route('/attendance', methods=['GET', 'POST'])
+def sign_attendance():
+    if request.method == 'POST':
+
+        #  Get the fields
+        POST_PASSWORD = request.form['password']
+
+        #  Create a cursor
+        cur = mysql.connection.cursor()
+        #  Get user by username
+        result = cur.execute("SELECT * FROM generatedcode WHERE password = %s", [POST_PASSWORD])
+
+        if result > 0:
+            #  Get the stored hash
+            data = cur.fetchone()
+            data['password']
+
+            flash('You have successfully signed your attendance', 'success')
+            return redirect(url_for('login'))
+
+        else:
+            error = 'Invalid attendance operation'
+            return render_template('attendance.html', error=error)
+        # Close connection
+        cur.close()
+    else:
+        return render_template('attendance.html')
 
 
 @app.route("/logout")
