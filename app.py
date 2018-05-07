@@ -49,7 +49,7 @@ def login():
         #  Create a cursor
         cur = mysql.connection.cursor()
         #  Get user by username
-        result = cur.execute("SELECT * FROM users WHERE username = %s", [POST_USERNAME])
+        result = cur.execute("SELECT * FROM student WHERE username = %s", [POST_USERNAME])
         if result > 0:
             #  Get the stored hash
             data = cur.fetchone()
