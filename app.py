@@ -120,7 +120,7 @@ def dashboard():
 def codegenerator():
 
         error = None
-        passwordd = ''
+        generatedCode = ''
         codetime = datetime.datetime.today()
         #  tdelta = datetime.timedelta(minutes=30)
 
@@ -130,17 +130,17 @@ def codegenerator():
 
                 x = random.randint(0, 9)
                 if x <= 3:
-                    passwordd += str(random.choice('abcdefghijklmnopqrstuvxyz'))
+                    generatedCode += str(random.choice('abcdefghijklmnopqrstuvxyz'))
                 elif x <= 6:
-                    passwordd += str(random.choice(',.;:-_*%&/()=?!'))
+                    generatedCode += str(random.choice(',.;:-_*%&/()=?!'))
                 else:
-                    passwordd += str(random.randrange(0, 9))
+                    generatedCode += str(random.randrange(0, 9))
 
             cur = mysql.connection.cursor()
-            cur.execute("INSERT INTO generatedcode(password) VALUES (%s)", [passwordd])
+            cur.execute("INSERT INTO code(Code, Time) VALUES (%s, %s)", (generatedCode, codetime))
             mysql.connection.commit()
             cur.close()
-            return passwordd
+            return generatedCode
         return render_template('codegenerator.html', error=error)
 
 
