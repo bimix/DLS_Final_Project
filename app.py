@@ -172,12 +172,12 @@ def sign_attendance():
     if request.method == 'POST':
 
         #  Get the fields
-        POST_PASSWORD = request.form['password']
+        POST_CODE = request.form['password']
 
         #  Create a cursor
         cur = mysql.connection.cursor()
         #  Get user by username
-        result = cur.execute("SELECT * FROM generatedcode WHERE password = %s", [POST_PASSWORD])
+        result = cur.execute("SELECT * FROM code WHERE code = %s", [POST_CODE])
 
         if result > 0:
             #  Get the stored hash
