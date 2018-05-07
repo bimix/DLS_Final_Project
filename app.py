@@ -11,10 +11,10 @@ app = Flask(__name__)
 
 #config
 app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_PORT'] = 3306
-app.config['MYSQL_USER'] = 'dt_admin'
-app.config['MYSQL_PASSWORD'] = 'Mar1010n'
-app.config['MYSQL_DB'] = 'studentsattendance'
+app.config['MYSQL_PORT'] = 7000
+app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_PASSWORD'] = ''
+app.config['MYSQL_DB'] = 'studentdls'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
 #initialize MySQL
