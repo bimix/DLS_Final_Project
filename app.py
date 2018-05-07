@@ -82,7 +82,7 @@ def register():
 
         # create a cursor
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO users(name, email, username, password) VALUES(%s, %s, %s, %s)",
+        cur.execute("INSERT INTO student(Name, email, username, hashpass) VALUES(%s, %s, %s, %s)",
                     (name, email, username, password))
 
         # commit to db
