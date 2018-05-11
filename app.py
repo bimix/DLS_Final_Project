@@ -12,8 +12,8 @@ app = Flask(__name__)
 #config
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_PORT'] = 7000
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''
+app.config['MYSQL_USER'] = 'dt_admin'
+app.config['MYSQL_PASSWORD'] = 'Mar1010n'
 app.config['MYSQL_DB'] = 'studentdls'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -53,7 +53,7 @@ def login():
         if result > 0:
             #  Get the stored hash
             data = cur.fetchone()
-            password = data['password']
+            password = data['hashpass']
             #  Compare the passwords
         if sha256_crypt.verify(POST_PASSWORD, password):
             session['logged_in'] = True
@@ -95,7 +95,7 @@ def register():
 
     return render_template('register.html', form=form)
 
-
+# Not used! Can we delete it?
 @app.route('/dashboard')
 def dashboard():
     #create cursor
