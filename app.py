@@ -60,7 +60,7 @@ def login():
             session['username'] = POST_USERNAME
 
             flash('You are now logged in', 'success')
-            return redirect(url_for('sign_attendance'))
+            return redirect(url_for('studentprofile'))
 
         else:
             error = 'Invalid Login'
@@ -69,6 +69,13 @@ def login():
         cur.close()
     else:
         return render_template('login.html')
+
+
+@app.route('/studentprofile', methods=['GET', 'POST'])
+def studentprofile():
+    flash('Welcome to student profile')
+    return render_template('studentprofile.html')
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -167,33 +174,30 @@ def teacher():
     return render_template('teacherSignin.html', error=error)
 
 
-@app.route('/attendance', methods=['GET', 'POST'])
-def sign_attendance():
-    if request.method == 'POST':
+@app.route('/signattendance', methods=['GET', 'POST'])
+def signattendance():
+    stamp = "signed"
+    error = None
 
-        #  Get the fields
-        POST_PASSWORD = request.form['password']
-
-        #  Create a cursor
-        cur = mysql.connection.cursor()
-        #  Get user by username
-        result = cur.execute("SELECT * FROM generatedcode WHERE password = %s", [POST_PASSWORD])
-
+    if request.method == 'GET' or 'POST':
+        cur1 = mysql.connection.cursor()
+        result = cur1.execute("SELECT password FROM generatedcode "
+                              "WHERE DATE_SUB(CURRENT_TIME (),INTERVAL 10 MINUTE) <= codetimeout;")
+        cur2 = mysql.connection.cursor()
+        studname = cur2.execute("SELECT CURRENT_USER FROM users")
+        print(result)  # prints to console the number of codes within that timeframe,for testing purposes
         if result > 0:
-            #  Get the stored hash
-            data = cur.fetchone()
-            data['password']
+            cur = mysql.connection.cursor()
+            cur.execute("INSERT INTO attendance(studentattendance, name) VALUES(%s, %s)", (stamp, studname))
+            mysql.connection.commit()
 
-            flash('You have successfully signed your attendance', 'success')
-            return redirect(url_for('login'))
-
+            cur.close()
+            #  cur1.close()
+            flash('Successfully signed attendance', 'Accepted')
         else:
-            error = 'Invalid attendance operation'
-            return render_template('attendance.html', error=error)
-        # Close connection
-        cur.close()
-    else:
-        return render_template('attendance.html')
+            flash('Sorry, you came too late!', 'Denied')
+
+    return render_template('studentprofile.html', error=error)
 
 
 @app.route("/logout")
