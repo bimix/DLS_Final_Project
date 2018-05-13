@@ -2,6 +2,28 @@
 {% block body %}
 <hr>
 <form>
+  Please insert the code here: <br>
+  <input type="text" name="attendancecode"><br>
+</form>
+<form>
     <input class="btn btn-default" type="button" value="Sign Attendance" onclick="window.location.href='{{ url_for( 'signattendance' ) }}'">
 </form>
+
+<h1>Attendance table</h1>
+<table class="table table-striped">
+  <thead>
+    <th>Name</th>
+    <th>Date Registered</th>
+
+  </thead>
+
+  <tbody>
+  {% for studeattendance in attendance %}
+    <tr>
+      <td>{{ studeattendance.name }}</td>
+      <td>{{ studeattendance.register_date }}</td>
+    </tr>
+  {% endfor %}
+ </tbody>
+</table>
 {% endblock %}

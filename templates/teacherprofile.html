@@ -1,11 +1,30 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-<h1>Teacher's profile </h1>
 
-
+<h1>Welcome to teacher's profile</h1>
+<h1>
 <form>
-    <input class="btn btn-default" type="button" value="Generate" onclick="window.location.href='{{ url_for( 'codegenerator' ) }}'">
+    <input class="btn btn-default" type="button" value="Generate code" onclick="window.location.href='{{ url_for( 'codegenerator' ) }}'">
 </form>
+</h1>
+
+<h1>Attendance table</h1>
+<table class="table table-striped">
+  <thead>
+    <th>Name</th>
+    <th>Date Registered</th>
+
+  </thead>
+
+  <tbody>
+  {% for studentattendance in student %}
+    <tr>
+      <td>{{ studentattendance.name }}</td>
+      <td>{{ studentattendance.register_date }}</td>
+    </tr>
+  {% endfor %}
+ </tbody>
+</table>
 
 {% endblock %}

@@ -33,6 +33,7 @@ def limit_remote_addr():
 def home():
     return render_template('home.html')
 
+
 @app.route('/about')
 def about():
     return render_template('about.html')
@@ -74,6 +75,19 @@ def login():
 @app.route('/studentprofile', methods=['GET', 'POST'])
 def studentprofile():
     flash('Welcome to student profile')
+    # create cursor
+    cur = mysql.connection.cursor()
+    # Get users
+    result = cur.execute("SELECT * FROM attendance")
+    attendance = cur.fetchall()
+
+    if result > 0:
+        return render_template('studentprofile.html', attendance=attendance)
+    else:
+        flash('No attendance found!')
+
+    # Close the connection
+    cur.close()
     return render_template('studentprofile.html')
 
 
@@ -103,33 +117,11 @@ def register():
     return render_template('register.html', form=form)
 
 
-@app.route('/dashboard')
-def dashboard():
-    #create cursor
-    cur = mysql.connection.cursor()
-    #Get users
-    result = cur.execute("SELECT * FROM users")
-    users = cur.fetchall()
-    timeout = datetime.datetime.today()
-    tdelta = datetime.timedelta(minutes=30)
-
-    if result > 0:
-        return render_template('dashboard.html', users=users)
-    else:
-        msg = 'No Projects found'
-        return render_template('dashboard.html', msg=msg)
-
-    #Close the connection
-    cur.close()
-
-
 @app.route('/codegenerator', methods=['GET', 'POST'])
 def codegenerator():
 
         error = None
         passwordd = ''
-        codetime = datetime.datetime.today()
-        #  tdelta = datetime.timedelta(minutes=30)
 
         if request.method == 'GET' or 'POST':
 
@@ -147,19 +139,34 @@ def codegenerator():
             cur.execute("INSERT INTO generatedcode(password) VALUES (%s)", [passwordd])
             mysql.connection.commit()
             cur.close()
-            return passwordd
+            flash('This is the generated code: ' + passwordd)
+            return redirect(url_for('teacherprofile'))
         return render_template('codegenerator.html', error=error)
 
 
 @app.route('/teacherprofile', methods=['GET', 'POST'])
 def teacherprofile():
     error = None
+
     if request.method == 'POST':
         if request.form['submit'] == 'Generate':
             redirect(url_for('codegenerator'))
     elif request.method == 'GET':
         redirect(url_for('codegenerator'))
 
+    # create cursor
+    cur = mysql.connection.cursor()
+    # Get users
+    result = cur.execute("SELECT * FROM attendance")
+    student = cur.fetchall()
+
+    if result > 0:
+        return render_template('teacherprofile.html', student=student)
+    else:
+        flash('No students found!')
+
+    # Close the connection
+    cur.close()
     return render_template('teacherprofile.html', error=error)
 
 
@@ -171,6 +178,7 @@ def teacher():
             error = 'Invalid Credentials. Please try again.'
         else:
             return redirect(url_for('teacherprofile'))
+
     return render_template('teacherSignin.html', error=error)
 
 
@@ -178,14 +186,16 @@ def teacher():
 def signattendance():
     stamp = "signed"
     error = None
-
+    GET_CODE = request.form['username']
     if request.method == 'GET' or 'POST':
         cur1 = mysql.connection.cursor()
         result = cur1.execute("SELECT password FROM generatedcode "
                               "WHERE DATE_SUB(CURRENT_TIME (),INTERVAL 10 MINUTE) <= codetimeout;")
         cur2 = mysql.connection.cursor()
         studname = cur2.execute("SELECT CURRENT_USER FROM users")
+
         print(result)  # prints to console the number of codes within that timeframe,for testing purposes
+
         if result > 0:
             cur = mysql.connection.cursor()
             cur.execute("INSERT INTO attendance(studentattendance, name) VALUES(%s, %s)", (stamp, studname))
@@ -194,8 +204,10 @@ def signattendance():
             cur.close()
             #  cur1.close()
             flash('Successfully signed attendance', 'Accepted')
+            return redirect(url_for('studentprofile'))
         else:
             flash('Sorry, you came too late!', 'Denied')
+            return redirect(url_for('studentprofile'))
 
     return render_template('studentprofile.html', error=error)
 
